@@ -81,7 +81,7 @@ const UploadImage = () => {
   };
 
   return (
-    <div className="container ">
+    <div className="">
       {/* header */}
       <div
         className="border"
@@ -115,7 +115,16 @@ const UploadImage = () => {
       </div>
       {/* body */}
       {submit ? (
-        <div className="row ">
+        <div className="row w-75 mx-auto mt-4">
+          <div className="d-flex justify-content-end">
+            <button
+              type="button"
+              className="btn btn-primary mb-3"
+              onClick={() => window.location.reload()}
+            >
+              Add New
+            </button>
+          </div>
           {selectedFile && (
             <div className="card border-white w-50">
               {/* <h2>Uploaded Image</h2> */}
@@ -135,7 +144,7 @@ const UploadImage = () => {
           )}
           {responseData && (
             <>
-              <div id="Galu Almirah" className="card border-white w-50">
+              <div className="card border-white w-50">
                 <h2 className="d-flex justify-content-start ">
                   Product Details
                 </h2>
@@ -293,13 +302,10 @@ const UploadImage = () => {
               </div>
             </>
           )}
-          {/* <button type="button" className="btn btn-primary" onClick={newFile}>
-            New
-          </button> */}
         </div>
       ) : (
         <div>
-          <div className="upload-section w-50 mx-auto mt-5 mb-5">
+          <div className="upload-section w-75 mx-auto mt-5 mb-5">
             <div className="drag-drop-area">
               <label htmlFor="fileInput" className="clickable-label" />
               {selectedFile === null ? (
@@ -322,7 +328,7 @@ const UploadImage = () => {
                   </div>
                 </>
               ) : (
-                <>
+                <div className="uploaded-file">
                   <input
                     type="file"
                     accept="image/png, image/jpeg"
@@ -339,7 +345,10 @@ const UploadImage = () => {
                     <p>Click to upload or drag and drop</p>
                     <p>PNG, JPG</p>
                   </div>
-                </>
+
+                  {/* <p>{selectedFile.name}</p>
+                  <button onClick={removeFileHandle}>Remove</button> */}
+                </div>
               )}
               <input
                 type="file"
@@ -352,13 +361,13 @@ const UploadImage = () => {
             {/* Progress bar */}
           </div>
           {selectedFile && !uploadFailed && (
-            <div id="file one">
-              <div className="card shadow-lg -black p-5">
+            <div className="" id="file one">
+              <div className="card w-75 mx-auto p-3">
                 {selectedFile && (
                   <div className=" d-flex justify-content-between">
                     {selectedFile && (
                       <div className="mb-3 ">
-                        <div className=" border  d-flex flex-row">
+                        <div className="d-flex flex-row">
                           <img
                             className=""
                             src={FileI}
@@ -370,11 +379,11 @@ const UploadImage = () => {
                               height: "8%",
                             }}
                           />
-                          <div className="mx-2 border ">
-                            <p className="border">{selectedFile.name}</p>
+                          <div className="mx-2  ">
+                            <p className="">{selectedFile.name}</p>
                             <p
                               style={{ marginTop: -15 }}
-                              className=" border w-50"
+                              className="  d-flex justify-content-start"
                             >
                               {bytesToMB(selectedFile.size)} MB
                             </p>
@@ -423,11 +432,9 @@ const UploadImage = () => {
                   </div>
                 </div>
               </div>
-              <div className="upload-section">
-                {/* Your existing file upload section */}
-                {/* Add submit button */}
+              <div className="upload-section  w-75 mx-auto mt-2 d-flex justify-content-end">
                 {selectedFile && (
-                  <div className=" d-flex justify-content-end">
+                  <div>
                     <button
                       type="button"
                       className=" btn btn-primary"
@@ -441,16 +448,17 @@ const UploadImage = () => {
             </div>
           )}
           {uploadFailed && (
+            // when upload error
             <div id="file two">
               <div
                 style={{ backgroundColor: "rgba(193, 57, 43, 0.05)" }}
-                className="card shadow-lg border-danger text-danger p-5"
+                className="card shadow-lg border-danger text-danger p-3 w-75 mx-auto"
               >
                 {selectedFile && (
                   <div className=" d-flex justify-content-between">
                     {selectedFile && (
                       <div className="mb-3 ">
-                        <div className="  d-flex flex-row">
+                        <div className="d-flex flex-row">
                           <img
                             className=""
                             src={FileI}
@@ -458,20 +466,23 @@ const UploadImage = () => {
                             style={{
                               top: 0,
                               left: 0,
-                              width: "10%",
-                              height: "10%",
+                              width: "8%",
+                              height: "8%",
                             }}
                           />
-                          <div className="mx-2 border ">
-                            <p className=" w-50 border">
+                          <div style={{ marginBottom: -25 }} className="mx-2">
+                            <p className="d-flex justify-content-start">
                               {bytesToMB(selectedFile.size)} MB
                             </p>
-                            <p style={{ marginTop: -17 }} className="border">
+                            <p
+                              style={{ marginTop: -17 }}
+                              className="d-flex justify-content-start"
+                            >
                               {selectedFile.name}
                             </p>
                             <p
-                              style={{ marginTop: -17, width: 80 }}
-                              className="border"
+                              className="d-flex justify-content-start"
+                              style={{ marginTop: -17 }}
                             >
                               Try Again !
                             </p>
@@ -505,21 +516,6 @@ const UploadImage = () => {
                         }}
                       />
                     )}
-                  </div>
-                )}
-              </div>
-              <div className="upload-section">
-                {/* Your existing file upload section */}
-                {/* Add submit button */}
-                {selectedFile && (
-                  <div>
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={onFileUpload}
-                    >
-                      Upload
-                    </button>
                   </div>
                 )}
               </div>
