@@ -26,7 +26,21 @@ const UploadImage = () => {
     setUploadFailed(false);
   };
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    let files;
+    if (event.target.files) {
+      // File input change
+      files = event.target.files;
+    } else if (event.dataTransfer && event.dataTransfer.files) {
+      // Drag and drop
+      files = event.dataTransfer.files;
+    }
+
+    if (files && files.length > 0) {
+      setSelectedFile(files[0]);
+      setUploadFinished(false);
+      setUploadFailed(false);
+    }
+    // setSelectedFile(event.target.files[0]);
   };
 
   const removeFileHandle = () => {
@@ -115,7 +129,7 @@ const UploadImage = () => {
       </div>
       {/* body */}
       {submit ? (
-        <div className="row w-75 mx-auto mt-4">
+        <div className="row w-75 mx-auto mt-4 mb-5">
           <div className="d-flex justify-content-end">
             <button
               type="button"
@@ -156,18 +170,18 @@ const UploadImage = () => {
                       Type :
                     </label>
                     <input
-                      className="form-control w-50"
+                      className="form-control w-50 mt-2"
                       disabled
                       value={responseData.results.type}
                     />
                     <label
                       // style={{ width: 270 }}
-                      className="d-flex justify-content-start "
+                      className="d-flex justify-content-start mt-2"
                     >
                       Timber Type:
                     </label>
                     <input
-                      className="form-control w-50"
+                      className="form-control w-50 mt-2"
                       disabled
                       value={responseData.results.timber_type}
                     />
@@ -180,18 +194,18 @@ const UploadImage = () => {
                       Type :
                     </label>
                     <input
-                      className="form-control w-50"
+                      className="form-control w-50 mt-2"
                       disabled
                       value={responseData.results.type}
                     />
                     <label
                       // style={{ width: 270 }}
-                      className="d-flex justify-content-start "
+                      className="d-flex justify-content-start mt-2"
                     >
                       Amount of Ebony carvings:
                     </label>
                     <input
-                      className="form-control w-50"
+                      className="form-control w-50 mt-2"
                       disabled
                       value={responseData.results.amount_of_ebony_carvings}
                     />
@@ -204,16 +218,16 @@ const UploadImage = () => {
                       Type :
                     </label>
                     <input
-                      className="form-control w-50"
+                      className="form-control w-50 mt-2"
                       disabled
                       value={responseData.results.type}
                     />
 
-                    <label className="d-flex justify-content-start ">
+                    <label className="d-flex justify-content-start mt-2 ">
                       Lock type of Sinhala Pettagam:
                     </label>
                     <input
-                      className="form-control w-50"
+                      className="form-control w-50 mt-2"
                       disabled
                       value={responseData.results.lock_type_of_sinhala_pettagam}
                     />
@@ -226,40 +240,25 @@ const UploadImage = () => {
                       Type :
                     </label>
                     <input
-                      className="form-control w-50"
+                      className="form-control w-50 mt-2"
                       disabled
                       value={responseData.results.type}
                     />
 
-                    <label className="d-flex justify-content-start ">
+                    <label className="d-flex justify-content-start mt-2">
                       Old:
                     </label>
                     <input
-                      className="form-control w-50"
+                      className="form-control w-50 mt-2"
                       disabled
                       value={responseData.results.old}
                     />
 
-                    <label
-                      // style={{ width: 49 }}
-                      className="d-flex justify-content-start "
-                    >
-                      Price:
-                    </label>
-                    <input
-                      className="form-control w-50"
-                      disabled
-                      value={responseData.results.price}
-                    />
-
-                    <label
-                      // style={{ width: 270 }}
-                      className="d-flex justify-content-start "
-                    >
+                    <label className="d-flex justify-content-start mt-2">
                       Amount of Ebony and Ivory Carvings:
                     </label>
                     <input
-                      className="form-control w-50"
+                      className="form-control w-50 mt-2"
                       disabled
                       value={
                         responseData.results.amount_of_ebony_and_ivory_carvings
@@ -274,18 +273,18 @@ const UploadImage = () => {
                       Type :
                     </label>
                     <input
-                      className="form-control w-50"
+                      className="form-control w-50 mt-2"
                       disabled
                       value={responseData.results.type}
                     />
                     <label
                       // style={{ width: 270 }}
-                      className="d-flex justify-content-start "
+                      className="d-flex justify-content-start mt-2"
                     >
                       Size of Dutch Pettagam:
                     </label>
                     <input
-                      className="form-control w-50"
+                      className="form-control w-50 mt-2"
                       disabled
                       value={responseData.results.size_of_dutch_pettagams}
                     />
@@ -306,7 +305,14 @@ const UploadImage = () => {
       ) : (
         <div>
           <div className="upload-section w-75 mx-auto mt-5 mb-5">
-            <div className="drag-drop-area">
+            <div
+              className="drag-drop-area"
+              onDrop={(e) => {
+                e.preventDefault();
+                handleFileChange(e);
+              }}
+              onDragOver={(e) => e.preventDefault()}
+            >
               <label htmlFor="fileInput" className="clickable-label" />
               {selectedFile === null ? (
                 <>
@@ -321,6 +327,8 @@ const UploadImage = () => {
                     onClick={() =>
                       document.querySelector('input[type="file"]').click()
                     }
+                    onDragOver={(e) => e.preventDefault()} // Prevent default behavior for dragover event
+                    onDrop={(e) => e.preventDefault()} // Prevent default behavior for drop event
                   >
                     <img style={{ height: 30 }} src={Cloud} alt="Cloud icon" />
                     <p>Click to upload or drag and drop</p>
@@ -397,8 +405,6 @@ const UploadImage = () => {
                         src={Success}
                         alt="Background"
                         style={{
-                          top: 0,
-                          left: 0,
                           width: "1.5%",
                           height: "1.5%",
                         }}
@@ -408,10 +414,9 @@ const UploadImage = () => {
                         onClick={removeFileHandle}
                         className="mt-4 mb-3"
                         src={DeleteIcon}
-                        alt="Background"
+                        alt="clickable-icon"
                         style={{
-                          top: 0,
-                          left: 0,
+                          cursor: "pointer",
                           width: "1.5%",
                           height: "1.5%",
                         }}
@@ -435,6 +440,14 @@ const UploadImage = () => {
               <div className="upload-section  w-75 mx-auto mt-2 d-flex justify-content-end">
                 {selectedFile && (
                   <div>
+                    <button
+                      type="button"
+                      style={{ marginRight: 11 }}
+                      className=" btn btn-light"
+                      onClick={onFileUpload}
+                    >
+                      Clear
+                    </button>
                     <button
                       type="button"
                       className=" btn btn-primary"
@@ -520,15 +533,6 @@ const UploadImage = () => {
                 )}
               </div>
             </div>
-
-            // <div className="card text-white bg-danger mb-3">
-            //   <div className="card-body">
-            //     <h5 className="card-title">Upload Failed</h5>
-            //     <p className="card-text">
-            //       There was an error uploading the file. Please try again later.
-            //     </p>
-            //   </div>
-            // </div>
           )}
         </div>
       )}
